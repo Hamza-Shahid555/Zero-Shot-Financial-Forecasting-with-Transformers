@@ -1,0 +1,40 @@
+# Multi-Asset Time-Series Transformer 📈🤖
+
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0-ee4c2c)](https://pytorch.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B)](https://streamlit.io/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
+> Can a model learn to trade Cryptocurrency by only observing the Stock Market?
+
+This project implements a Transformer-based Deep Learning model for financial time-series forecasting. It explores the concept of Zero-Shot Transfer Learning
+where the model is trained exclusively on S&P 500 equities (Apple, Microsoft, Google, etc.)
+and then evaluated on its ability to forecast Cryptocurrency assets (Bitcoin, Ethereum) without ever seeing them during training.
+
+---
+
+## 🚀 Key Features
+
+* Universal Market Model:** A single model instance that handles multiple asset classes simultaneously.
+* Asset Embeddings:** Uses learnable vector embeddings to capture the unique "identity" and volatility profile of each asset while sharing temporal weights.
+* Transformer Encoder:** Replaces traditional RNNs/LSTMs with Multi-Head Attention to better capture long-range dependencies and market regimes over a 30-day lookback window.
+* Zero-Shot Generalization:** Demonstrates that fundamental market dynamics (momentum, mean reversion) are transferable from traditional finance (TradFi) to decentralized finance (DeFi).
+* Interactive Dashboard:** A built-in Streamlit app to visualize forecasts, attention weights, and validation metrics.
+
+## 🏗️ Architecture
+
+The model treats financial forecasting as a sequence modeling problem:
+
+1. Input:** 30-day sequence of normalized returns + Technical Indicators (Moving Averages, Volatility).
+2. Embedding Layer:** Maps the Asset ID (e.g., "AAPL") to a dense vector, which is concatenated with the time-series features.
+3. Encoder:** A multi-layer Transformer Encoder processes the sequence.
+4. Head:** A linear layer projects the encoded features to a 5-day return forecast.
+
+```mermaid
+graph LR
+    A[Historical Data (30 Days)] --> B[Feature Engineering];
+    B --> C[Transformer Encoder];
+    D[Asset ID] --> E[Learnable Embedding];
+    E --> C;
+    C --> F[Forecast Head];
+    F --> G[Predicted Returns (Next 5 Days)];
